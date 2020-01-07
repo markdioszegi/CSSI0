@@ -67,7 +67,12 @@ namespace SI0
         public Recipe DeepCopy()
         {
             Recipe deepCopyRecipe = (Recipe)this.MemberwiseClone();
-            deepCopyRecipe.ingredients = new List<Ingredient>(ingredients);
+            List<Ingredient> _ingredients = new List<Ingredient>();
+            foreach (var ingredient in ingredients)
+            {
+                _ingredients.Add(ingredient);
+            }
+            deepCopyRecipe.ingredients = _ingredients;
             return deepCopyRecipe;
         }
     }
