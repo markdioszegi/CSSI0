@@ -6,13 +6,13 @@ namespace SI0
     public class Recipe
     {
         public String ID, name;
-        public List<String> ingredients;
+        public List<Ingredient> ingredients;
 
-        public Recipe(String ID, String name, List<String> ingredients)
+        public Recipe(String ID, String name)
         {
             this.ID = ID;
             this.name = name;
-            this.ingredients = ingredients;
+            ingredients = new List<Ingredient>();
         }
 
         public override String ToString()
@@ -22,11 +22,11 @@ namespace SI0
             {
                 if (i != ingredients.Count - 1)
                 {
-                    _ingredients += ingredients[i] + ", ";
+                    _ingredients += ingredients[i].Name + ", ";
                 }
                 else
                 {
-                    _ingredients += ingredients[i];
+                    _ingredients += ingredients[i].Name;
                 }
             }
             return String.Format("{0} ({1})\nIngredients: {2}", name, ID, _ingredients);
@@ -44,15 +44,30 @@ namespace SI0
         * _ingredients[i] = ingredients[i]; } } ingredients = _ingredients; } else {
         * throw new Error("Can not delete the last ingredient!"); } }
         */
-
-        public object ShallowCopy()
+        public void AddIngredient(string ingredient)
         {
-            return this.MemberwiseClone();
+            ingredients.Add(new Ingredient(ingredient));
+        }
+        public void RemoveIngredient(string ingredientToRemove)
+        {
+            foreach (var ingredient in ingredients)
+            {
+                if (ingredient.Name == ingredientToRemove)
+                {
+                    ingredients.Remove(ingredient);
+                    break;
+                }
+            }
+        }
+        public Recipe ShallowCopy()
+        {
+            return (Recipe)this.MemberwiseClone();
         }
 
-        public object DeepCopy()
+        public Recipe DeepCopy()
         {
-            Recipe deepCopyRecipe = new Recipe(this.ID, this.name, this.ingredients);
+            Recipe deepCopyRecipe = (Recipe)this.MemberwiseClone();
+            deepCopyRecipe.ingredients = new List<Ingredient>(ingredients);
             return deepCopyRecipe;
         }
     }
